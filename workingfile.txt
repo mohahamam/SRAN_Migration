@@ -1,0 +1,52 @@
+###############################Delete ONTs pvids##############################
+configure bridge port 1/1/4/8/15/1/3 no pvid
+configure bridge port 1/1/12/10/1/1/2 no pvid
+configure bridge port 1/1/12/10/1/1/3 no pvid
+###############################Delete ONTs Bridge ports##############################
+configure bridge port 1/1/4/8/15/1/3 no vlan-id 989
+configure bridge port 1/1/6/3/1/1/1 no vlan-id 900
+configure bridge port 1/1/6/3/1/1/1 no vlan-id 970
+configure bridge port 1/1/12/10/1/1/2 no vlan-id 2000
+configure bridge port 1/1/12/10/1/1/3 no vlan-id 2000
+###############################Correct T-containers##############################
+configure qos interface 1/1/4/8/15/1/3 upstream-queue 0 bandwidth-profile name:1000Mbps bandwidth-sharing uni-sharing priority 1
+configure qos interface 1/1/4/8/15/1/3 upstream-queue 1 bandwidth-profile name:1000Mbps bandwidth-sharing uni-sharing priority 2
+configure qos interface 1/1/4/8/15/1/3 upstream-queue 2 bandwidth-profile name:1000Mbps bandwidth-sharing uni-sharing priority 3
+configure qos interface 1/1/4/8/15/1/3 upstream-queue 3 bandwidth-profile name:1000Mbps bandwidth-sharing uni-sharing priority 4
+configure qos interface 1/1/4/8/15/1/3 upstream-queue 4 bandwidth-profile name:1000Mbps bandwidth-sharing uni-sharing priority 5
+configure qos interface 1/1/4/8/15/1/3 upstream-queue 5 bandwidth-profile name:1000Mbps bandwidth-sharing uni-sharing priority 6
+configure qos interface 1/1/4/8/15/1/3 upstream-queue 6 bandwidth-profile name:1000Mbps bandwidth-sharing uni-sharing priority 7
+configure qos interface 1/1/4/8/15/1/3 upstream-queue 7 bandwidth-profile name:1000Mbps bandwidth-sharing uni-sharing priority 8
+configure qos interface 1/1/6/3/1/1/1 upstream-queue 0 bandwidth-profile name:SRAN bandwidth-sharing uni-sharing priority 1
+configure qos interface 1/1/6/3/1/1/1 upstream-queue 1 bandwidth-profile name:SRAN bandwidth-sharing uni-sharing priority 2
+configure qos interface 1/1/6/3/1/1/1 upstream-queue 2 bandwidth-profile name:SRAN bandwidth-sharing uni-sharing priority 3
+configure qos interface 1/1/6/3/1/1/1 upstream-queue 3 bandwidth-profile name:SRAN bandwidth-sharing uni-sharing priority 4
+configure qos interface 1/1/6/3/1/1/1 upstream-queue 4 bandwidth-profile name:SRAN bandwidth-sharing uni-sharing priority 5
+configure qos interface 1/1/6/3/1/1/1 upstream-queue 5 bandwidth-profile name:SRAN bandwidth-sharing uni-sharing priority 6
+configure qos interface 1/1/6/3/1/1/1 upstream-queue 6 bandwidth-profile name:SRAN bandwidth-sharing uni-sharing priority 7
+configure qos interface 1/1/6/3/1/1/1 upstream-queue 7 bandwidth-profile name:SRAN bandwidth-sharing uni-sharing priority 8
+###############################Correction of vlans##############################
+configure vlan id 100 in-qos-prof-name name:Default_TC3
+configure vlan id 101 in-qos-prof-name name:Default_TC3
+configure vlan id 885 in-qos-prof-name name:Default_TC3
+configure vlan id 900 in-qos-prof-name name:Ingress_Default
+configure vlan id 950 in-qos-prof-name name:Ingress_Default
+configure vlan id 951 in-qos-prof-name name:Ingress_Default
+configure vlan id 970 in-qos-prof-name name:Ingress_Default
+configure vlan id 989 in-qos-prof-name name:Ingress_Default
+configure vlan id 990 in-qos-prof-name name:Ingress_Default
+configure vlan id 991 in-qos-prof-name name:Ingress_Default
+configure vlan id 992 in-qos-prof-name name:Ingress_Default
+configure vlan id 993 in-qos-prof-name name:Ingress_Default
+configure vlan id 995 in-qos-prof-name name:Ingress_Default
+configure vlan id 2000 in-qos-prof-name name:Default_TC3
+###############################Create ONTs Bridge ports##############################
+configure bridge port 1/1/4/8/15/1/3 vlan-id 989
+configure bridge port 1/1/6/3/1/1/1 vlan-id 900 tag single-tagged qos-profile name:2G_3G_LTE_RAN in-qos-prof-name name:Default_TC7
+configure bridge port 1/1/6/3/1/1/1 vlan-id 970 tag single-tagged qos-profile name:2G_3G_LTE_OAM in-qos-prof-name name:Default_TC7
+configure bridge port 1/1/12/10/1/1/2 vlan-id 2000 qos-profile name:WiFiAPBackhauling_UP_DOWN
+configure bridge port 1/1/12/10/1/1/3 vlan-id 2000 qos-profile name:WiFiAPBackhauling_UP_DOWN
+###############################Create ONTs pvids##############################
+configure bridge port 1/1/4/8/15/1/3 pvid 989
+configure bridge port 1/1/12/10/1/1/2 pvid 2000
+configure bridge port 1/1/12/10/1/1/3 pvid 2000

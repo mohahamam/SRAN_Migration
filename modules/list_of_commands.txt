@@ -1,0 +1,6 @@
+environment inhibit-alarms
+info configure bridge port flat
+info configure vlan id flat
+info configure ethernet line flat
+info configure equipment slot flat
+exit

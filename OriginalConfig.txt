@@ -1,0 +1,137 @@
+###############################list of orignal filtered Vlans##############################
+configure vlan id 100 mode residential-bridge name MW_MGMT new-broadcast enable aging-time 7200 in-qos-prof-name name:Default_TC7
+configure vlan id 101 mode residential-bridge name MW_NMS_UPLINK_101 new-broadcast enable in-qos-prof-name name:Default_TC7
+configure vlan id 885 mode residential-bridge name CSG_MGMT new-broadcast enable aging-time 7200 in-qos-prof-name name:Default_TC7 ipv4-mcast-ctrl
+configure vlan id 900 mode residential-bridge name 2G3G_SRAN new-broadcast enable aging-time 7200 in-qos-prof-name name:Default_TC7
+configure vlan id 950 mode residential-bridge name LTE_SRAN new-broadcast enable aging-time 7200 in-qos-prof-name name:Default_TC7
+configure vlan id 951 mode residential-bridge name LTE_OAM new-broadcast enable aging-time 7200 in-qos-prof-name name:Default_TC6
+configure vlan id 970 mode residential-bridge name 2G3G_OAM new-broadcast enable aging-time 7200 in-qos-prof-name name:Default_TC7
+configure vlan id 989 mode residential-bridge name Test_VLAN_MBH new-broadcast enable aging-time 7200 in-qos-prof-name name:Default_TC7
+configure vlan id 990 mode residential-bridge name 2G_3G_SRAN_2 new-broadcast enable aging-time 7200 in-qos-prof-name name:Default_TC7
+configure vlan id 991 mode residential-bridge name 2G_3G_OAM_2 new-broadcast enable aging-time 7200 in-qos-prof-name name:Default_TC7
+configure vlan id 992 mode residential-bridge name LTE_SRAN_2 new-broadcast enable aging-time 7200 in-qos-prof-name name:Default_TC7
+configure vlan id 993 mode residential-bridge name LTE_OAM_2 new-broadcast enable aging-time 7200 in-qos-prof-name name:Default_TC7
+configure vlan id 995 mode residential-bridge name FixedLTE new-broadcast enable aging-time 7200 in-qos-prof-name name:Default_TC7 ipv4-mcast-ctrl
+configure vlan id 2000 mode residential-bridge name Wifi_BH new-broadcast enable aging-time 7200 in-qos-prof-name name:Default_TC0
+###############################list of orignal services##############################
+configure bridge port 1/1/4/8/15/1/3 vlan-id 989
+configure bridge port 1/1/6/3/1/1/1 vlan-id 900 tag single-tagged qos-profile name:2G_3G_LTE_RAN in-qos-prof-name name:Default_TC7
+configure bridge port 1/1/6/3/1/1/1 vlan-id 970 tag single-tagged qos-profile name:2G_3G_LTE_OAM in-qos-prof-name name:Default_TC7
+configure bridge port 1/1/12/10/1/1/2 vlan-id 2000 qos-profile name:WiFiAPBackhauling_UP_DOWN
+configure bridge port 1/1/12/10/1/1/3 vlan-id 2000 qos-profile name:WiFiAPBackhauling_UP_DOWN
+configure bridge port 1/1/13/7 vlan-id 100 tag single-tagged
+configure bridge port 1/1/13/7 vlan-id 900 tag single-tagged
+configure bridge port 1/1/13/7 vlan-id 992 tag single-tagged
+configure bridge port 1/1/13/9 vlan-id 990 tag single-tagged
+configure bridge port 1/1/13/9 vlan-id 991 tag single-tagged
+configure bridge port 1/1/13/9 vlan-id 992 tag single-tagged
+configure bridge port 1/1/13/9 vlan-id 993 tag single-tagged
+configure bridge port 1/1/13/11 vlan-id 100 tag single-tagged
+configure bridge port 1/1/13/11 vlan-id 101 tag single-tagged
+configure bridge port 1/1/13/11 vlan-id 990 tag single-tagged
+configure bridge port 1/1/13/11 vlan-id 991 tag single-tagged
+configure bridge port 1/1/13/11 vlan-id 992 tag single-tagged
+configure bridge port 1/1/13/11 vlan-id 993 tag single-tagged
+configure bridge port 1/1/13/13 vlan-id 100 tag single-tagged
+configure bridge port 1/1/13/13 vlan-id 990 tag single-tagged
+configure bridge port 1/1/13/13 vlan-id 991 tag single-tagged
+configure bridge port 1/1/13/13 vlan-id 992 tag single-tagged
+configure bridge port 1/1/13/13 vlan-id 993 tag single-tagged
+configure bridge port 1/1/13/15 vlan-id 900 tag single-tagged
+configure bridge port 1/1/13/15 vlan-id 950 tag single-tagged
+configure bridge port 1/1/13/15 vlan-id 951
+configure bridge port 1/1/13/15 vlan-id 970
+configure bridge port 1/1/13/15 vlan-id 990 tag single-tagged
+configure bridge port 1/1/13/15 vlan-id 991 tag single-tagged
+configure bridge port 1/1/13/15 vlan-id 992 tag single-tagged
+configure bridge port 1/1/13/15 vlan-id 993 tag single-tagged
+configure bridge port 1/1/13/17 vlan-id 990 tag single-tagged
+configure bridge port 1/1/13/17 vlan-id 992 tag single-tagged
+configure bridge port 1/1/13/19 vlan-id 990 tag single-tagged
+configure bridge port 1/1/13/19 vlan-id 991 tag single-tagged
+configure bridge port 1/1/13/19 vlan-id 992 tag single-tagged
+configure bridge port 1/1/13/19 vlan-id 993 tag single-tagged
+configure bridge port 1/1/13/23 vlan-id 900 tag single-tagged
+configure bridge port 1/1/13/23 vlan-id 950 tag single-tagged
+configure bridge port 1/1/13/23 vlan-id 951 tag single-tagged
+configure bridge port 1/1/13/23 vlan-id 970 tag single-tagged
+configure bridge port 1/1/13/25 vlan-id 900 tag single-tagged
+configure bridge port 1/1/13/25 vlan-id 950 tag single-tagged
+configure bridge port 1/1/13/25 vlan-id 951 tag single-tagged
+configure bridge port 1/1/13/25 vlan-id 970 tag single-tagged
+configure bridge port 1/1/13/25 vlan-id 990 tag single-tagged
+configure bridge port 1/1/13/25 vlan-id 991 tag single-tagged
+configure bridge port 1/1/13/25 vlan-id 992 tag single-tagged
+configure bridge port 1/1/13/25 vlan-id 993 tag single-tagged
+configure bridge port 1/1/13/27 vlan-id 100 tag single-tagged
+configure bridge port 1/1/13/27 vlan-id 900 tag single-tagged
+configure bridge port 1/1/13/27 vlan-id 950 tag single-tagged
+configure bridge port 1/1/13/27 vlan-id 951 tag single-tagged
+configure bridge port 1/1/13/27 vlan-id 970 tag single-tagged
+configure bridge port 1/1/13/31 vlan-id 950 tag single-tagged
+configure bridge port 1/1/13/31 vlan-id 990 tag single-tagged
+configure bridge port 1/1/13/31 vlan-id 991 tag single-tagged
+configure bridge port 1/1/13/31 vlan-id 992 tag single-tagged
+configure bridge port 1/1/13/31 vlan-id 993 tag single-tagged
+configure bridge port 1/1/13/35 vlan-id 995 qos priority:7
+configure bridge port 1/1/14/5 vlan-id 990 tag single-tagged
+configure bridge port 1/1/14/5 vlan-id 991 tag single-tagged
+configure bridge port 1/1/14/5 vlan-id 992 tag single-tagged
+configure bridge port 1/1/14/5 vlan-id 993 tag single-tagged
+configure bridge port 1/1/14/9 vlan-id 990 tag single-tagged
+configure bridge port 1/1/14/9 vlan-id 991 tag single-tagged
+configure bridge port 1/1/14/9 vlan-id 992 tag single-tagged
+configure bridge port 1/1/14/9 vlan-id 993 tag single-tagged
+configure bridge port 1/1/14/11 vlan-id 990 tag single-tagged
+configure bridge port 1/1/14/11 vlan-id 991 tag single-tagged
+configure bridge port 1/1/14/11 vlan-id 992 tag single-tagged
+configure bridge port 1/1/14/11 vlan-id 993 tag single-tagged
+configure bridge port 1/1/14/13 vlan-id 990 tag single-tagged
+configure bridge port 1/1/14/13 vlan-id 991 tag single-tagged
+configure bridge port 1/1/14/13 vlan-id 992 tag single-tagged
+configure bridge port 1/1/14/13 vlan-id 993 tag single-tagged
+configure bridge port 1/1/14/35 vlan-id 100 tag single-tagged
+configure bridge port 1/1/14/35 vlan-id 900 tag single-tagged
+configure bridge port 1/1/14/35 vlan-id 950 tag single-tagged
+configure bridge port 1/1/14/35 vlan-id 990 tag single-tagged
+configure bridge port 1/1/14/35 vlan-id 992 tag single-tagged
+configure bridge port 1/1/16/3 vlan-id 900 tag single-tagged
+configure bridge port 1/1/16/3 vlan-id 950 tag single-tagged
+configure bridge port 1/1/16/3 vlan-id 951 tag single-tagged
+configure bridge port 1/1/16/3 vlan-id 970 tag single-tagged
+configure bridge port 1/1/16/5 vlan-id 950 tag single-tagged qos priority:7
+configure bridge port 1/1/16/5 vlan-id 951 tag single-tagged qos priority:7
+configure bridge port 1/1/16/6 vlan-id 950 tag single-tagged qos priority:7
+configure bridge port 1/1/16/6 vlan-id 951 tag single-tagged qos priority:7
+configure bridge port 1/1/16/7 vlan-id 950 tag single-tagged qos priority:7
+configure bridge port 1/1/16/7 vlan-id 951 tag single-tagged qos priority:7
+configure bridge port 1/1/16/7 vlan-id 990 tag single-tagged
+configure bridge port 1/1/16/7 vlan-id 991 tag single-tagged
+configure bridge port 1/1/16/9 vlan-id 100 tag single-tagged
+configure bridge port 1/1/16/9 vlan-id 900 tag single-tagged qos priority:7
+configure bridge port 1/1/16/9 vlan-id 950 tag single-tagged qos priority:7
+configure bridge port 1/1/16/9 vlan-id 951 tag single-tagged qos priority:7
+configure bridge port 1/1/16/9 vlan-id 970 tag single-tagged qos priority:7
+configure bridge port 1/1/16/13 vlan-id 900 tag single-tagged qos priority:7
+configure bridge port 1/1/16/13 vlan-id 950 tag single-tagged qos priority:7
+configure bridge port 1/1/16/13 vlan-id 951 tag single-tagged qos priority:7
+configure bridge port 1/1/16/13 vlan-id 970 tag single-tagged qos priority:7
+configure bridge port 1/1/16/15 vlan-id 885 tag single-tagged
+configure bridge port 1/1/16/15 vlan-id 990 tag single-tagged
+configure bridge port 1/1/16/15 vlan-id 991 tag single-tagged
+configure bridge port 1/1/16/15 vlan-id 992 tag single-tagged
+configure bridge port 1/1/16/15 vlan-id 993 tag single-tagged
+configure bridge port 1/1/16/23 vlan-id 950 tag single-tagged
+configure bridge port 1/1/16/23 vlan-id 951 tag single-tagged
+configure bridge port 1/1/16/23 vlan-id 990 tag single-tagged
+configure bridge port 1/1/16/23 vlan-id 991 tag single-tagged
+configure bridge port 1/1/16/25 vlan-id 900 tag single-tagged
+configure bridge port 1/1/16/25 vlan-id 950 tag single-tagged
+configure bridge port 1/1/16/25 vlan-id 951 tag single-tagged
+configure bridge port 1/1/16/25 vlan-id 970 tag single-tagged
+configure bridge port 1/1/16/29 vlan-id 950 tag single-tagged qos priority:7
+configure bridge port 1/1/16/29 vlan-id 951 tag single-tagged qos priority:7
+configure bridge port 1/1/16/29 vlan-id 990 tag single-tagged in-qos-prof-name name:Default_TC7
+configure bridge port 1/1/16/29 vlan-id 991 tag single-tagged in-qos-prof-name name:Default_TC7
+configure bridge port 1/1/16/35 vlan-id 950 tag single-tagged qos priority:7
+configure bridge port 1/1/16/35 vlan-id 951 tag single-tagged qos priority:7
