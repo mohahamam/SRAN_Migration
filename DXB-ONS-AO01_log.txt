@@ -16890,6 +16890,7 @@ configure bridge port 1/1/13/15 vlan-id 990 tag single-tagged
 configure bridge port 1/1/13/15 vlan-id 991 tag single-tagged
 configure bridge port 1/1/13/15 vlan-id 992 tag single-tagged
 configure bridge port 1/1/13/15 vlan-id 993 tag single-tagged
+configure bridge port 1/1/13/15 pvid 900
 configure bridge port 1/1/13/17 default-priority 7 max-unicast-mac 12 qos-profile name:2G_3G_LTE_RAN_AE
 configure bridge port 1/1/13/17 vlan-id 990 tag single-tagged
 configure bridge port 1/1/13/17 vlan-id 992 tag single-tagged
@@ -17206,7 +17207,7 @@ configure ethernet line 1/1/13/13 port-type nni admin-up
 configure ethernet line 1/1/13/13 mau 1 type 1000baselx10 power up speed-auto-sense
 configure ethernet line 1/1/13/14 port-type uni
 configure ethernet line 1/1/13/14 mau 1 type 1000baselx10 power up speed-auto-sense
-configure ethernet line 1/1/13/15 port-type nni admin-up
+configure ethernet line 1/1/13/15 port-type uni admin-up
 configure ethernet line 1/1/13/15 mau 1 type 1000baselx10 power up speed-auto-sense
 configure ethernet line 1/1/13/16 port-type uni
 configure ethernet line 1/1/13/16 mau 1 type 1000baselx10 power up speed-auto-sense
@@ -17214,11 +17215,11 @@ configure ethernet line 1/1/13/17 port-type nni admin-up
 configure ethernet line 1/1/13/17 mau 1 type 1000baselxfd power up
 configure ethernet line 1/1/13/18 port-type uni
 configure ethernet line 1/1/13/18 mau 1 type 1000baselx10 power up speed-auto-sense
-configure ethernet line 1/1/13/19 port-type nni admin-up
+configure ethernet line 1/1/13/19 port-type uni admin-up
 configure ethernet line 1/1/13/19 mau 1 type 1000baselx10 power up speed-auto-sense
 configure ethernet line 1/1/13/20 port-type uni
 configure ethernet line 1/1/13/20 mau 1 type 1000baselx10 power up speed-auto-sense
-configure ethernet line 1/1/13/21 port-type nni admin-up
+configure ethernet line 1/1/13/21 port-type uni admin-up
 configure ethernet line 1/1/13/21 mau 1 type 1000baselx10 power up speed-auto-sense
 configure ethernet line 1/1/13/22 port-type uni
 configure ethernet line 1/1/13/22 mau 1 type 1000baselx10 power up speed-auto-sense
@@ -17402,7 +17403,7 @@ configure ethernet line 1/1/16/3 port-type nni admin-up
 configure ethernet line 1/1/16/3 mau 1 type 1000baselx10 power up
 configure ethernet line 1/1/16/4 port-type uni
 configure ethernet line 1/1/16/4 mau 1 type 1000baselx10 power up
-configure ethernet line 1/1/16/5 port-type nni admin-up
+configure ethernet line 1/1/16/5 port-type uni admin-up
 configure ethernet line 1/1/16/5 mau 1 type 1000baselx10 power up
 configure ethernet line 1/1/16/6 port-type nni
 configure ethernet line 1/1/16/6 mau 1 type 1000baselx10 power up speed-auto-sense

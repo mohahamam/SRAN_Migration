@@ -1,10 +1,14 @@
-import re,csv
+import re,csv,netmiko,os,sys,arrow,argparse,time
+sys.path.insert(0, 'modules')
+from inputfromuser import canweproceed
+from CleanNetmico import strip_ansi_escape_codes
 
+#####################Useful Functions used inside the script###############################
 def find_between(s, start, end):
 	  return (s.split(start))[1].split(end)[0]	
 
 
-######################## Get a dictionary out of the csv file of vlans
+######################## Get a dictionary out of the csv file of vlans####################
 def csv_list_of_vlans(listfile):
 	with open(listfile,'r',newline='') as a:
 		reader = csv.reader(a,delimiter=',')
@@ -14,7 +18,7 @@ def csv_list_of_vlans(listfile):
 listofvlansandqos= csv_list_of_vlans('modules/list_of_vlans.csv')
 listofvlans1 = list(listofvlansandqos.keys())
 
-
+#######################process the output of the OLT commands
 
 def extract_bridgeports(inputfile,listofvlans):
 	with open (inputfile,'r') as configfile:
@@ -22,8 +26,10 @@ def extract_bridgeports(inputfile,listofvlans):
 		vlansconfig=''
 		pvids = ''
 		correctvlansconfig = ''
-
+		ethline = ''
 		for line in configfile:
+			if re.search(r'configure ethernet line 1/1/\d+/\d*[13579] port-type', line):
+				ethline +=str(line)
 			for i in listofvlans.items():
 				if re.search(r'configure bridge port [\d\/]* vlan-id '+(i)[0], line):
 					bridgeport += str (line)
@@ -32,14 +38,36 @@ def extract_bridgeports(inputfile,listofvlans):
 				elif str('configure vlan id '+(i)[0]) in line:
 					vlansconfig += str(line)
 					correctvlansconfig += str('configure vlan id '+ (i)[0]+ ' in-qos-prof-name name:'+ (i)[1]+'\n' )
-					
-		return (bridgeport,vlansconfig,pvids,correctvlansconfig)	
-	
+				
+		return (bridgeport,vlansconfig,pvids,correctvlansconfig,ethline)	
+		
+############################Main files and directories used in the script#####################
+outdir =os.path.join('outputfiles',hostname)
+	if not os.path.exists(outdir):
+		os.makedirs(outdir)
 
-service,vlans,pvidlines,corrctvlans = extract_bridgeports('DXB-ONS-AO01_log.txt', listofvlansandqos)
+	logsdir =os.path.join(outdir,'logs/')
+	if not os.path.exists(logsdir):
+		os.makedirs(logsdir)
+
+logfilename=os.path.join(logsdir,'LogFile_'+hostname+'_'+ arrow.now().format('YYYY-MM-DD-HH-mm-ss')+'.txt')
+originalconfig= os.path.join(outdir,'OriginalSipConfig_'+hostname+'_'+ arrow.now().format('YYYY-MM-DD-HH-mm-ss')+'.txt')
+correctedconfig= os.path.join(outdir,'CorrectSipConfig_'+hostname+'_'+ arrow.now().format('YYYY-MM-DD-HH-mm-ss')+'.txt')
+infoconfqosinterface=os.path.join(logsdir,'infoconfigqos_'+hostname+'_'+ arrow.now().format('YYYY-MM-DD-HH-mm-ss')+'.txt')
+
+service,vlans,pvidlines,corrctvlans,ethernetline = extract_bridgeports('DXB-ONS-AO01_log.txt', listofvlansandqos)
+
+
+
+
+############################Run the main script and save the output to the Files##############
+#file1 will be having the working file commands that you need to execute
+#file2 will be having the Original configuration of the vlans and ONTs
+#file3 will be a file that is used as input to collect QOS T-containers used in ONTs.
+
 
 with open ('workingfile.txt','w') as file1, open('OriginalConfig.txt','w') as file2, open('retriveTcont.txt','w') as file3:					
-###############################list of orignal filtered Vlans##############################
+###############################list of orignal filtered Vlans#################################
 	file2.write(('#'*30)+'#list of orignal filtered Vlans'+('#'*30)+'\n'+vlans)
 	#print(('#'*30)+'#list of orignal filtered Vlans'+('#'*30)+'\n'+vlans)
 	file2.write(('#'*30)+'#list of orignal services'+('#'*30)+'\n'+service)
@@ -65,7 +93,7 @@ with open ('workingfile.txt','w') as file1, open('OriginalConfig.txt','w') as fi
 ###############################Correct T-containers ##############################
 	servicelines =service.split('\n')
 	defaultingressBP=[]
-	defaultTCBP=[]
+	defaultTC3BP=[]
 	bridgeportexpression = r'1/1/\d*/\d*/\d*/\d*/\d*'
 	for line in servicelines:
 		for i in listofvlansandqos.items():
@@ -75,12 +103,14 @@ with open ('workingfile.txt','w') as file1, open('OriginalConfig.txt','w') as fi
 					#print(re.findall(bridgeportexpression, line))
 			elif (i)[1]=='Default_TC3':
 				if re.search(r'configure bridge port 1/1/\d*/\d*/\d*/\d*/\d* vlan-id '+(i)[0], line):
-					defaultTCBP +=(re.findall(bridgeportexpression, line))
+					defaultTC3BP +=(re.findall(bridgeportexpression, line))
 					#print(re.findall(bridgeportexpression, line))
+	
+	
 	defaultingressBP = sorted(set(defaultingressBP))
-	defaultTCBP = 	sorted(set(defaultTCBP))
-	print(defaultingressBP)
-	print(defaultTCBP)
+	defaultTC3BP = 	sorted(set(defaultTC3BP))
+#	print(defaultingressBP)
+#	print(defaultTC3BP)
 	
 	expression2 = r'(configure bridge port (1/1/\d*/\d*/\d*/\d*/\d* ))'
 	onts_ckts = re.findall(expression2,deleteonts)
@@ -98,14 +128,17 @@ with open ('workingfile.txt','w') as file1, open('OriginalConfig.txt','w') as fi
 #	for line1 in tcontconfig:
 #		print(line1)
 	for line in tcontconfig:
-		#print (defaultingressBP)
 		if re.findall(r'1/1/\d*/\d*/\d*/\d*/\d*', line)[0] in defaultingressBP:
 			for i in range(8):
 				#if re.findall(r'1/1/\d*/\d*/\d*/\d*/\d*', line) in defaultingressBP:
 				file1.write(line.replace(find_between(line, 'upstream-queue', 'bandwidth-profile'),' '+str(i)+' ')+' bandwidth-sharing uni-sharing priority '+ str(i+1) +'\n')
 				print(line.replace(find_between(line, 'upstream-queue', 'bandwidth-profile'),' '+str(i)+' ')+' bandwidth-sharing uni-sharing priority '+ str(i+1))
-			
-			
+		elif re.findall(r'1/1/\d*/\d*/\d*/\d*/\d*', line)[0] in defaultTC3BP:
+			file1.write(re.sub(r'bandwidth-profile name:[^\n]*','bandwidth-profile none',line)+'\n')
+			print(re.sub(r'bandwidth-profile name:[^\n]*','bandwidth-profile none',line))
+			file1.write(line.replace(find_between(line, 'upstream-queue', 'bandwidth-profile'),' '+'3'+' ')+'\n')
+			print(line.replace(find_between(line, 'upstream-queue', 'bandwidth-profile'),' '+'3'+' '))
+
 ##########################Correct Vlans in-qos-prof-name profile ############################
 	file1.write(('#'*30)+'#Correction of vlans'+('#'*30)+'\n'+corrctvlans)
 	print(('#'*30)+'#Correction of vlans'+('#'*30)+'\n'+corrctvlans)
@@ -128,3 +161,62 @@ with open ('workingfile.txt','w') as file1, open('OriginalConfig.txt','w') as fi
 		createpvid +=  (i+'\n')
 	file1.write(('#'*30)+'#Create ONTs pvids'+('#'*30)+'\n'+createpvid)
 	print(('#'*30)+'#Create ONTs pvids'+('#'*30)+'\n'+createpvid)
+
+
+##########################Handling the AE ports (UNI) to (NNI)
+	#pvidetherlines =pvidlines.split('\n')
+	#for i in pvidetherlines:
+	#	print(i)
+	#etherlineslist=[]
+	serviceetherlines = service.split('\n')
+	etherlineslist=[]
+	for i in serviceetherlines:
+		etherlineslist+=(re.findall(r' 1/1/\d+/\d*[13579] ', i))
+	etherlineslist = sorted(set(etherlineslist))
+	print(etherlineslist)
+
+	ethernetline1 = ethernetline.split('\n')
+	ethernetline1 = list(ethernetline1)
+	ethernetline1.remove('')
+	unietherline = ''
+	for line in ethernetline1:
+		#print(re.findall(r' 1/1/\d+/\d*[13579] ', line))
+		if re.findall(r' 1/1/\d+/\d*[13579] ', line)[0] in etherlineslist:
+			if 'port-type uni ' in line:
+				unietherline+=line+('\n')
+	
+	unietherline=unietherline.replace('uni','nni')
+#	print(unietherline)
+	file1.write(('#'*30)+'#Correct EthernetLines from uni to nni'+('#'*30)+'\n'+unietherline)
+	
+	
+	unietherline = unietherline.split('\n')
+	listofunilines = []
+
+	for i in unietherline:
+		listofunilines+=(re.findall(r' 1/1/\d+/\d*[13579] ', i))
+	
+	listofunilines= sorted(set(listofunilines))
+#	print(listofunilines)
+	
+	ethernetbp = sorted(set(serviceetherlines))
+	ethernetbp.remove('')
+	recreateethlines=''
+	for line in ethernetbp:
+		if re.findall(r' 1/1/\d+/\d*[13579] ', line)!=[]:
+			if re.findall(r' 1/1/\d+/\d*[13579] ', line)[0] in listofunilines:
+				recreateethlines+=line+('\n')
+	print (recreateethlines)
+	file1.write(('#'*30)+'#Recreate the Ethernet bridge ports again'+('#'*30)+'\n'+recreateethlines)
+	
+	ethpvids = pvidlines.split('\n')
+	ethpvids = list(ethpvids)
+	ethpvids.remove('')
+	createethpvids = ''
+	for line in ethpvids:
+		if re.findall(r' 1/1/\d+/\d*[13579] ', line)!=[]:
+			if re.findall(r' 1/1/\d+/\d*[13579] ', line)[0] in listofunilines:
+				createethpvids+=line
+
+	print(createethpvids)
+	file1.write(('#'*30)+'#Recreate the Ethernet lines pvid'+('#'*30)+'\n'+createethpvids)
