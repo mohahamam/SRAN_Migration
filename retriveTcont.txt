@@ -1,4 +1,0 @@
-info configure qos interface 1/1/12/10/1/1/2 flat | match exact:bandwidth
-info configure qos interface 1/1/12/10/1/1/3 flat | match exact:bandwidth
-info configure qos interface 1/1/4/8/15/1/3 flat | match exact:bandwidth
-info configure qos interface 1/1/6/3/1/1/1 flat | match exact:bandwidth
