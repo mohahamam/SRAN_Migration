@@ -1,0 +1,24 @@
+###############################Delete ONTs pvids##############################
+###############################Delete ONTs Bridge ports##############################
+###############################Correct T-containers##############################
+###############################Correct EthernetLines from uni to nni##############################
+configure ethernet line 1/1/14/1 port-type nni admin-up
+configure ethernet line 1/1/16/3 port-type nni admin-up
+###############################Correction of vlans##############################
+configure vlan id 100 in-qos-prof-name name:Default_TC3
+configure vlan id 885 in-qos-prof-name name:Default_TC3
+configure vlan id 900 in-qos-prof-name name:Ingress_Default
+configure vlan id 950 in-qos-prof-name name:Ingress_Default
+configure vlan id 951 in-qos-prof-name name:Ingress_Default
+configure vlan id 970 in-qos-prof-name name:Ingress_Default
+configure vlan id 989 in-qos-prof-name name:Ingress_Default
+configure vlan id 990 in-qos-prof-name name:Ingress_Default
+configure vlan id 991 in-qos-prof-name name:Ingress_Default
+configure vlan id 992 in-qos-prof-name name:Ingress_Default
+configure vlan id 993 in-qos-prof-name name:Ingress_Default
+configure vlan id 995 in-qos-prof-name name:Ingress_Default
+configure vlan id 2000 in-qos-prof-name name:Default_TC3
+###############################Create ONTs Bridge ports##############################
+###############################Create ONTs pvids##############################
+###############################Recreate the Ethernet bridge ports again##############################
+configure bridge port 1/1/14/1 default-priority 7 max-unicast-mac 12 qos-profile name:2G_3G_LTE_RAN_AEconfigure bridge port 1/1/14/1 vlan-id 100 tag single-taggedconfigure bridge port 1/1/14/1 vlan-id 900 tag single-taggedconfigure bridge port 1/1/14/1 vlan-id 950 tag single-taggedconfigure bridge port 1/1/14/1 vlan-id 951 tag single-taggedconfigure bridge port 1/1/14/1 vlan-id 970 tag single-taggedconfigure bridge port 1/1/16/3 max-unicast-mac 12configure bridge port 1/1/16/3 vlan-id 900 tag single-taggedconfigure bridge port 1/1/16/3 vlan-id 950 tag single-taggedconfigure bridge port 1/1/16/3 vlan-id 951 tag single-taggedconfigure bridge port 1/1/16/3 vlan-id 970 tag single-tagged###############################Recreate the Ethernet lines pvid##############################
