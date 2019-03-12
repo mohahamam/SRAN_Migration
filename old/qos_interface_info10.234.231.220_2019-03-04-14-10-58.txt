@@ -1,0 +1,8 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+###Connecting to the Device IP =10.234.231.220###
+configure
+AUH-OAE-AO04:isadmin>configure#info configure qos interface 1/1/9/11/8/1/1 flat 
+| match exact:bandwidth
+configure qos interface 1/1/9/11/8/1/1 upstream-queue 7 bandwidth-profile name:SRAN
+AUH-OAE-AO04:isadmin>configure#exit all
+AUH-OAE-AO04:isadmin>#
